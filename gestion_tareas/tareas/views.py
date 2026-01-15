@@ -3,21 +3,26 @@ from django.contrib.auth.decorators import login_required
 from .models import Tarea
 from .forms import TareaForm
 
-@login_required # Obliga al alumno a estar logueado para ver la página
+@login_required
 def tareas_alumno(request):
     if request.method == 'POST':
         form = TareaForm(request.POST)
         if form.is_valid():
             tarea = form.save(commit=False)
-            tarea.creador = request.user
+            tarea.creador = request.user  # Asignamos quién crea la tarea
             tarea.save()
+            form.save_m2m()  # OBLIGATORIO para guardar los colaboradores
             return redirect('tareas_alumno')
     else:
         form = TareaForm()
 
-    mis_tareas = Tarea.objects.filter(creador=request.user)
-    return render(request, 'tareas/tareas_alumno.html', {'tareas': mis_tareas, 'form': form})
-
+    # Obtenemos las tareas donde el usuario es creador O colaborador
+    mis_tareas = Tarea.objects.filter(creador=request.user).distinct()
+    
+    return render(request, 'tareas/tareas_alumno.html', {
+        'tareas': mis_tareas, 
+        'form': form
+    })
 def tareas_pendientes_validacion(request):
     # Cambia .all() por .filter(validada_profe=False)
     tareas_pendientes = Tarea.objects.filter(validada_profe=False, requiere_validacion=True)

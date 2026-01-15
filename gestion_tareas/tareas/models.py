@@ -12,7 +12,7 @@ class Tarea(models.Model):
     descripcion = models.TextField()
     tipo = models.CharField(max_length=20, choices=TIPO_TAREA)
     creador = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tareas_creadas')
-    colaboradores = models.ManyToManyField(User, blank=True, related_name='tareas_colabora')
+    colaboradores = models.ManyToManyField(User, blank=True, related_name='tareas_grupales')
     requiere_validacion = models.BooleanField(default=False)
     completada = models.BooleanField(default=False)
     validada_profe = models.BooleanField(default=False)
