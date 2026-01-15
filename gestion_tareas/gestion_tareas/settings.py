@@ -86,6 +86,11 @@ DATABASES = {
     }
 }
 
+# Iniciar sesión
+LOGIN_REDIRECT_URL = 'tareas_alumno'
+
+# Cerrar sesión
+LOGOUT_REDIRECT_URL = 'login'
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
