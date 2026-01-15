@@ -4,11 +4,12 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 
+#Perfil
 def perfil_usuario(request):
     return render(request, 'usuarios/perfil.html', {'usuario': request.user})
 
 
-
+#Listado
 def listado_usuarios(request):
     if request.method == 'POST':
         nombre = request.POST.get('username')
