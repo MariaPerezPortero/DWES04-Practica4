@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block title %}Mi perfil{% endblock %}
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">Mi perfil</div>
+    <div class="card-body">
+        <p><strong>Usuario:</strong>{{ request.user.username}}</p>
+        <p><strong>Email:</strong>{{ request.user.email}}</p>
+        <p><strong>Rol:</strong>{{ request.user.perfil.rol | capfirst}}</p>
+    </div>
+</div>
+{% endblock %}

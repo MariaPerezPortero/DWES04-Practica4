@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block title %}Validación de tareas{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">Tareas pendientes de validación</h2>
+<table class="table table-bordered shadow">
+    <thead class="table-dark">
+        <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Alumno</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.tipo }}</td>
+            <td>{{ tarea.creador.username }}</td>
+            <td>
+                <a href="{% url 'validar_tarea' tarea.id %}" class="btn btn-sm btn-success">Validar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

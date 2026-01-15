@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>Gestión de Usuarios</h2>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formCrear">
+            + Nuevo Usuario
+        </button>
+    </div>
+
+    <div class="collapse mb-4" id="formCrear">
+        <div class="card card-body shadow-sm">
+            <form method="POST" class="row g-3">
+                {% csrf_token %}
+                <div class="col-md-4">
+                    <input type="text" name="username" class="form-control" placeholder="Usuario" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="es_profesor" id="checkP">
+                        <label class="form-check-label" for="checkP">¿Es Profesor?</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success w-100">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.username }}</td>
+                <td>
+                    {% if u.is_staff %}<span class="badge bg-danger">Profesor</span>
+                    {% else %}<span class="badge bg-primary">Alumno</span>{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

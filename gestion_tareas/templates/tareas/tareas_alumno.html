@@ -1,0 +1,61 @@
+{% extends "index.html" %}{% block title %}Mis Tareas{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Mis Tareas</h2>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formTarea">+ Nueva Tarea</button>
+    </div>
+
+    <div class="collapse mb-5" id="formTarea">
+        <div class="card card-body shadow-sm">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Guardar Tarea</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for t in tareas %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ t.titulo }}</h5>
+                        <span class="badge bg-info text-dark">{{ t.get_tipo_display|default:t.tipo }}</span>
+                    </div>
+                    
+                    <p class="card-text text-muted">{{ t.descripcion }}</p>
+
+                    <div class="mb-2">
+                        {% if t.completada %}
+                            <span class="badge bg-success">✓ Completada</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% endif %}
+
+                        {% if t.requiere_validacion %}
+                            <span class="badge bg-secondary">Requiere Profe</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="border-top pt-2">
+                        <small class="text-muted d-block">Creado por: {{ t.creador.username }}</small>
+                        {% if t.colaboradores.all %}
+                            <small class="fw-bold">Equipo:</small>
+                            {% for colab in t.colaboradores.all %}
+                                <span class="badge rounded-pill bg-light text-dark border">{{ colab.username }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No hay tareas creadas.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
